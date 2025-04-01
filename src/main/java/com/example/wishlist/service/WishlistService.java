@@ -26,8 +26,8 @@ public class WishlistService {
         return wishlistRepository.getWishByName(name);
     }
 
-    public boolean updateWish(WishlistModel updatedWish){
-        return wishlistRepository.updateWish(updatedWish);
+    public void updateWish(WishlistModel updatedWish){
+        wishlistRepository.updateWish(updatedWish);
     }
 
     public boolean deleteWish(String name){
