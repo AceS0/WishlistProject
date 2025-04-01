@@ -1,7 +1,6 @@
 package com.example.wishlist.controller;
 
 import com.example.wishlist.model.WishlistModel;
-import com.example.wishlist.repository.WishlistRepository;
 import com.example.wishlist.service.WishlistService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
