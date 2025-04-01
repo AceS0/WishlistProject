@@ -1,5 +1,6 @@
 package com.example.wishlist.service;
 
+import com.example.wishlist.model.User;
 import com.example.wishlist.model.WishlistModel;
 import com.example.wishlist.repository.WishlistRepository;
 import org.springframework.stereotype.Service;
@@ -14,9 +15,10 @@ public class WishlistService {
         this.wishlistRepository = wishlistRepository;
     }
 
-    public void addWish(WishlistModel wish){
-        wishlistRepository.addWish(wish);
+    public void addWish(WishlistModel wish, int userId){
+        wishlistRepository.addWish(wish,userId);
     }
+
 
     public List<WishlistModel> getAllWishes(){
         return wishlistRepository.getAllWishes();
@@ -26,11 +28,30 @@ public class WishlistService {
         return wishlistRepository.getWishByName(name);
     }
 
+    public int getUserIdByUsername(String username){
+        return wishlistRepository.getUserIdByUsername(username);
+    }
+
+    public List<WishlistModel> getWishlistsByUserId(int userId) {
+        return wishlistRepository.getWishlistsByUserId(userId);
+    }
+
     public void updateWish(WishlistModel updatedWish){
         wishlistRepository.updateWish(updatedWish);
     }
 
     public boolean deleteWish(String name){
         return wishlistRepository.deleteWish(name);
+    }
+
+    public boolean login(String uid, String pw){
+        User user = wishlistRepository.getUser(uid);
+        if (user != null){
+            // Fandt bruger - tjekker om koden passer
+            return user.getPw().equals(pw);
+        }
+        // Fandt ikke brugeren.
+        return false;
+
     }
 }

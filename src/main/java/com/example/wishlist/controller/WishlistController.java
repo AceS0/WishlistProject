@@ -1,11 +1,16 @@
 package com.example.wishlist.controller;
 
+import com.example.wishlist.model.User;
 import com.example.wishlist.model.WishlistModel;
 import com.example.wishlist.service.WishlistService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.security.Principal;
+import java.util.List;
 
 @Controller
 @RequestMapping("")
@@ -15,10 +20,49 @@ public class WishlistController {
         this.wishlistService = wishlistService;
     }
 
+    private boolean isLoggedIn(HttpSession session) {
+        return session.getAttribute("username") != null;
+    }
+
+    @GetMapping("/wishes/login")
+    public String showLogin(){
+        return "login";
+    }
+
+    @PostMapping("/wishes/login")
+    public String login(@RequestParam("uid") String uid, @RequestParam("pw") String pw,
+                        HttpSession session, Model model){
+
+        if (wishlistService.login(uid,pw)){
+
+            session.setAttribute("username", uid);
+            session.setMaxInactiveInterval(30);
+
+            return "redirect:/wishes";
+        }
+
+        model.addAttribute("wrongCredentials",true);
+        return "login";
+    }
+
+
     //Viser listen af ønsker.
     @GetMapping("/wishes")
-    public String viewWishes(Model model){
-        model.addAttribute("wishes",wishlistService.getAllWishes());
+    public String viewWishes(Model model, Principal principal, HttpSession session){
+        String username = (String) session.getAttribute("username");
+
+        if (!isLoggedIn(session)) {
+            return "redirect:/wishes/login";  // går tilbage til login hvis ikke autoriseret
+        }
+
+        // finder brugerid ud fra username
+        int userId = wishlistService.getUserIdByUsername(username);
+
+        // Finder ønskelisten ud fra brugerid
+        List<WishlistModel> userWishlists = wishlistService.getWishlistsByUserId(userId);
+
+        // sørger for at printe listen til den pågældende bruger.
+        model.addAttribute("wishes", userWishlists);
         return "wishList";
     }
 
@@ -39,8 +83,13 @@ public class WishlistController {
 
     //Gemmer et nyt ønske.
     @PostMapping("/wishes/save")
-    public String saveWish(@ModelAttribute WishlistModel wish){
-        wishlistService.addWish(wish);
+    public String saveWish(@ModelAttribute WishlistModel wish, Principal principal){
+        String username = principal.getName();
+        int userId = wishlistService.getUserIdByUsername(username);
+        if (userId == -1) {
+            return "error";
+        }
+        wishlistService.addWish(wish,userId);
         return "redirect:/wishes";
     }
 
