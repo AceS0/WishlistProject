@@ -1,0 +1,21 @@
+.header{
+    font-family: 'Trebuchet MS', sans-serif;
+    color: #006064;
+    font-size: 2.5rem;
+    text-align: center;
+    margin-top: 1.5rem;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+    border-bottom: 2px solid #00838f;
+    padding-bottom: 10px;
+}
+
+
+
+.footer{
+    margin-top: auto;
+    background-color: #006064;
+    color: white;
+    text-align: center;
+    padding: 15px;
+    font-size: 0.9rem;
+}
