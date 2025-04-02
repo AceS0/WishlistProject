@@ -45,6 +45,11 @@ public class WishlistController {
         return "login";
     }
 
+    @GetMapping("/wishes/register")
+    public String showRegister(){
+        return "register";
+    }
+
 
     //Viser listen af ønsker.
     @GetMapping("/wishes")

@@ -2,13 +2,12 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Login session</title>
+    <title>Register session</title>
     <link rel="stylesheet" th:href="@{/login.css}">
 </head>
 <body>
-<h1>Login</h1>
-<form action="/wishes/login" method="post">
-    <p th:if="${wrongCredentials}" class="error">Forkert brugerid eller password</p>
+<h1>Register</h1>
+<form action="/wishes/register" method="post">
     <p class="textbox">
         <label>Username:</label>
         <input name="uid" type="text" autofocus>
@@ -18,8 +17,7 @@
         <input name="pw" type="password">
     </p>
     <p>
-        <a th:href="@{'/wishes/register'}"><button type="button">Register</button></a>
-        <button type="submit">Login</button>
+        <button type="submit">Submit</button>
         <a th:href="@{'/'}"><button type="button">Fortryd</button></a>
     </p>
 </form>

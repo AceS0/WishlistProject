@@ -1,14 +1,15 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="UTF-8">
     <title>WishyourList</title>
+    <link rel="stylesheet" th:href="@{/wishList.css}">
 </head>
 <body>
 <h1 class="header1">Dine ønskelister: </h1>
 <table class="table">
     <tr>
-        <th class="th">Navn</th>
+        <th class="th">Ønskeliste</th>
         <th class="th">Beskrivelse</th>
         <th class="th">Handlinger</th>
     </tr>
@@ -18,14 +19,14 @@
         <td>
             <a class="links-button" th:href="@{'/wishes/' + ${wishlist.name} + '/edit'}">Rediger</a>
             <form th:action="@{'/wishes/' + ${wishlist.name} + '/delete'}" method="post" style="display: inline">
-                <button class="links-buttondelete" type="submit">
-                    Slet
-                </button>
+                <button class="links-buttondelete" type="submit">Slet</button>
             </form>
         </td>
     </tr>
 </table>
-<a href="/wishes">Se alle dine ønsker</a>
-<a href="/wishes/login">Login</a>
+<div style="text-align: center; margin-top: 20px;">
+    <a href="/wishes/register">Opret bruger</a> |
+    <a href="/wishes/login">Login</a>
+</div>
 </body>
 </html>
