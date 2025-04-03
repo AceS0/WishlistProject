@@ -41,7 +41,7 @@ tr:hover {
     background: #f1f1f1;
 }
 
-.links-button, .links-buttondelete {
+.links-button, .links-buttondelete, .add-wish {
     display: inline-block;
     padding: 8px 12px;
     margin-right: 5px;
@@ -79,4 +79,18 @@ a:hover {
 
 table a {
     margin-right: 5px;
+}
+
+.add-wish {
+    background-color: #34dbae;
+
+}
+.add-wish:hover{
+    background-color: #19916e;
+}
+.flex-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
 }

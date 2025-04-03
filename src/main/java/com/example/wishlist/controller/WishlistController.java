@@ -1,6 +1,5 @@
 package com.example.wishlist.controller;
 
-import com.example.wishlist.model.User;
 import com.example.wishlist.model.WishlistModel;
 import com.example.wishlist.service.WishlistService;
 import jakarta.servlet.http.HttpSession;
@@ -8,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
 import java.util.List;
@@ -50,6 +50,22 @@ public class WishlistController {
         return "register";
     }
 
+    @PostMapping("/wishes/register")
+    public String register(@RequestParam("uid") String uid, @RequestParam("pw") String pw, RedirectAttributes redirectAttributes){
+        if (uid.length() < 3) {
+            redirectAttributes.addFlashAttribute("error", "Username is too short. Must be at least 3 characters.");
+            return "redirect:/wishes/register";
+        }
+
+        if (!wishlistService.register(uid, pw)) {
+            redirectAttributes.addFlashAttribute("error", "Account already exists.");
+            return "redirect:/wishes/register";
+        }
+
+        return "redirect:/wishes/login";
+    }
+
+
 
     //Viser listen af ønsker.
     @GetMapping("/wishes")
@@ -73,12 +89,17 @@ public class WishlistController {
 
     //Dykker ned i et ønske.
     @GetMapping("/wishes/{name}")
-    public ResponseEntity<WishlistModel> getWishByName(@PathVariable String name){
+    public String getWishByName(@PathVariable String name, Model model){
         WishlistModel wish = wishlistService.getWishByName(name);
-        return (wish != null) ? ResponseEntity.ok(wish) : ResponseEntity.notFound().build();
+        if (wish != null){
+            model.addAttribute("wish",wish);
+            return "wish-items";
+        } else {
+            return null;
+        }
     }
 
-    //Opretter et nyt ønske.
+    //Opretter et nyt ønskeliste.
     @GetMapping("/wishes/add")
     public String showAddWishForm(Model model){
         WishlistModel wish = new WishlistModel();

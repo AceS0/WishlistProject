@@ -8,6 +8,9 @@
 <body>
 <h1>Register</h1>
 <form action="/wishes/register" method="post">
+    <div th:if="${error}" style="color: red;">
+        <p th:text="${error}"></p>
+    </div>
     <p class="textbox">
         <label>Username:</label>
         <input name="uid" type="text" autofocus>

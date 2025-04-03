@@ -4,6 +4,7 @@ import com.example.wishlist.model.User;
 import com.example.wishlist.model.WishlistModel;
 import com.example.wishlist.repository.WishlistRepository;
 import org.springframework.stereotype.Service;
+import org.mindrot.jbcrypt.BCrypt;
 
 import java.util.List;
 
@@ -44,14 +45,41 @@ public class WishlistService {
         return wishlistRepository.deleteWish(name);
     }
 
+    public String encodePassword(String password) {
+        return BCrypt.hashpw(password, BCrypt.gensalt());
+    }
+
     public boolean login(String uid, String pw){
         User user = wishlistRepository.getUser(uid);
         if (user != null){
             // Fandt bruger - tjekker om koden passer
-            return user.getPw().equals(pw);
+            String storedHashedPassword = user.getPw();
+            return checkPassword(pw, storedHashedPassword);
         }
         // Fandt ikke brugeren.
         return false;
 
+    }
+
+    public boolean checkPassword(String enteredPassword, String storedHashedPassword) {
+        return BCrypt.checkpw(enteredPassword, storedHashedPassword);  // Verify the password
+    }
+
+    private boolean isValidUsername(String uid) {
+        String regex = "^[a-zA-Z0-9_]{3,15}$";  //3-15 characters
+        return uid.matches(regex);
+    }
+
+    public boolean register(String uid, String pw){
+        User user = wishlistRepository.getUser(uid);
+        String encodedPassword = encodePassword(pw);
+        if (user != null) {
+            return false;
+        }
+        if (!isValidUsername(uid)){
+            return false;
+        }
+        wishlistRepository.registerUser(uid, encodedPassword);
+        return true;
     }
 }

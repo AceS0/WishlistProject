@@ -3,14 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <title>Ønskesedelen.dk</title>
-    <link rel="stylesheet" href="/static/index.css">
+    <link rel="stylesheet" th:href="@{/index.css}">
 </head>
 <body>
 <h1 class="header">Ønskesedelen.dk</h1>
 
 <p class="paragraph">Her på Ønskesedelen.dk kan du sammensætte din helt egen ønskeseddel til næste fødselsdag, jul eller eid.</p>
 
+<button class="button" onclick="window.location.href='/wishes'">Din Ønskeliste</button>
 <button class="button">Opret en ønskeseddel</button>
+<button class="button" onclick="window.location.href='/wishes/login'">Login</button>
+<button class="button" onclick="window.location.href='/wishes/register'">Opret bruger</button>
+
 
 <footer class="footer">
     Kontakt os på 20708055 eller Din-Ønskeseddel@info.dk

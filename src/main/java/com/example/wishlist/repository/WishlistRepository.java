@@ -21,8 +21,17 @@ public class WishlistRepository {
     }
 
     public User getUser(String uid){
-        String sql = "SELECT * FROM users WHERE username = ?";
-        return jdbcTemplate.queryForObject(sql,mapUsers(),uid);
+        try {
+            String sql = "SELECT * FROM users WHERE username = ?";
+            return jdbcTemplate.queryForObject(sql, mapUsers(), uid);
+        } catch (EmptyResultDataAccessException e){
+            return null;
+        }
+    }
+
+    public void registerUser(String uid, String pw){
+        String sql = "INSERT INTO users (username, password) VALUES (?, ?)";
+        jdbcTemplate.update(sql,uid,pw);
     }
 
     //Tilføjer et ønske til databasen. (Create funktion)
@@ -32,9 +41,6 @@ public class WishlistRepository {
             String sql = "INSERT INTO wishlists (user_id,name, description) VALUES (?,?,?)";
             jdbcTemplate.update(sql,userId,wish.getName(),wish.getDescription());
 
-            /*String idSql = "SELECT id FROM wishlist WHERE name = ?";
-            Integer wishId = jdbcTemplate.queryForObject(idSql, Integer.class,wish.getName());
-            */
         } catch (DuplicateKeyException ignored){
         }
     }
@@ -49,7 +55,7 @@ public class WishlistRepository {
     //Henter et ønske ud fra navnet. (Read funktion)
     public WishlistModel getWishByName(String name){
         try {
-            String sql = "SELECT * FROM wishlists WHERE name = ?";
+            String sql = "SELECT * FROM wishlists.items WHERE name = ?";
             return jdbcTemplate.queryForObject(sql,mapWishes(),name);
         } catch (EmptyResultDataAccessException e){
             return null;
