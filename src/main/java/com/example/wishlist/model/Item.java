@@ -1,29 +1,24 @@
 package com.example.wishlist.model;
 
-import java.util.List;
-
-public class WishlistModel {
+public class Item {
     private int id;
     private String name;
     private String description;
-    private List<Item> items;
 
-    public WishlistModel(String name, String description){
-        this.name = name;
-        this.description = description;
-    }
 
-    public WishlistModel(int id, String name, String description) {
+    public Item(int id, String name, String description) {
         this.id = id;
         this.name = name;
         this.description = description;
     }
 
-    public WishlistModel(){
+
+    public int getId() {
+        return id;
     }
 
-    public void addItem(Item item) {
-        this.items.add(item);
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -42,8 +37,12 @@ public class WishlistModel {
         this.description = description;
     }
 
-
-    public int getId() {
-        return id;
+    @Override
+    public String toString() {
+        return "WishlistItem{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                '}';
     }
 }
