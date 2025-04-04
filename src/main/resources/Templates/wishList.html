@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>WishyourList</title>
+    <link rel="stylesheet" th:href="@{/wishList.css}">
+</head>
+<body>
+<h1 class="header1">Dine ønskelister: </h1>
+<div class="flex-center">
+<a class="add-wish" href="/wishes/add">Add Wishlist</a>
+</div>
+<table class="table">
+    <tr>
+        <th class="th">Ønskeliste</th>
+        <th class="th">Beskrivelse</th>
+        <th class="th">Handlinger</th>
+    </tr>
+    <tr th:each="wishlistitem : ${wishes}">
+        <td class="td" th:text="${wishlistitem.name}"></td>
+        <td class="td" th:text="${wishlistitem.description}"></td>
+        <td>
+            <a class="links-button" th:href="@{'/wishes/' + ${wishlistitem.name}}">Vælg</a>
+            <a class="links-button" th:href="@{'/wishes/' + ${wishlistitem.name} + '/edit'}">Rediger</a>
+            <form th:action="@{'/wishes/' + ${wishlistitem.name} + '/delete'}" method="post" style="display: inline">
+                <button class="links-buttondelete" type="submit">Slet</button>
+            </form>
+        </td>
+    </tr>
+</table>
+<div style="text-align: center; margin-top: 20px;">
+    <a href="/wishes/register">Opret bruger</a> |
+    <a href="/wishes/login">Login</a> |
+    <a href="/">Forside</a>
+</div>
+</body>
+</html>

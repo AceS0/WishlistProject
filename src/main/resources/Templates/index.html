@@ -4,16 +4,30 @@
     <meta charset="UTF-8">
     <title>Ønskesedelen.dk</title>
     <link rel="stylesheet" href="/index.css">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+
 </head>
 <body>
-<h1 class="header">Ønskesedelen.dk</h1>
 
-<p class="paragraph">Her på Ønskesedelen.dk kan du sammensætte din helt egen ønskeseddel til næste fødselsdag, jul eller eid.</p>
+<div class="header">
+    <h1>Ønskesedelen.dk </h1>
 
-<button class="button">Opret en ønskeseddel</button>
+    <div class="button-container">
+    <button class="login-button" onclick="window.location.href='/wishes/login'">Login</button>
+    <button class="opret-button" onclick="window.location.href='/wishes/register'">Opret bruger</button>
+
+    </div>
+</div>
+
+<div class="paragraph">
+<p>Her på Ønskesedelen.dk kan du sammensætte din helt egen ønskeseddel til næste fødselsdag, jul eller eid.</p>
+<button class="ønskeseddel"onclick="window.location.href='/wishes/add'">Opret en ønskeseddel</button>
+<button class="ønskeseddel" onclick="window.location.href='/wishes'">Din Ønskeliste</button>
+
+</div>
 
 <footer class="footer">
-    Kontakt os på 20708055 eller Din-Ønskeseddel@info.dk
+    Kontakt os på 20708055 eller Ønskesedelen@info.dk
                             <br>
     &copy; 2025 Ønskesedelen.dk | Alle rettigheder forbeholdes
 </footer>
