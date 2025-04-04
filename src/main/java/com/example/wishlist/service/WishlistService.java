@@ -1,5 +1,6 @@
 package com.example.wishlist.service;
 
+import com.example.wishlist.model.Item;
 import com.example.wishlist.model.User;
 import com.example.wishlist.model.WishlistModel;
 import com.example.wishlist.repository.WishlistRepository;
@@ -35,6 +36,19 @@ public class WishlistService {
 
     public List<WishlistModel> getWishlistsByUserId(int userId) {
         return wishlistRepository.getWishlistsByUserId(userId);
+    }
+
+    public List<Item> getWishItemsOfUser(String username, String wishlistname){
+        int wishlistId = wishlistRepository.getWishlistIdByName(username,wishlistname);
+        return wishlistRepository.getWishItemsOfUser(wishlistId);
+    }
+
+    public Item getSpecificWishItemOfUser(String username, String wishlistName, String itemName){
+        List<Item> userItems = getWishItemsOfUser(username, wishlistName); // Get all items in the wishlist
+        return userItems.stream()
+                .filter(item -> item.getName().equalsIgnoreCase(itemName))
+                .findFirst()
+                .orElse(null);
     }
 
     public void updateWish(WishlistModel updatedWish){

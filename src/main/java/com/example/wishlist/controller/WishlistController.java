@@ -1,9 +1,9 @@
 package com.example.wishlist.controller;
 
+import com.example.wishlist.model.Item;
 import com.example.wishlist.model.WishlistModel;
 import com.example.wishlist.service.WishlistService;
 import jakarta.servlet.http.HttpSession;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -36,7 +36,7 @@ public class WishlistController {
         if (wishlistService.login(uid,pw)){
 
             session.setAttribute("username", uid);
-            session.setMaxInactiveInterval(30);
+            session.setMaxInactiveInterval(500);
 
             return "redirect:/wishes";
         }
@@ -69,7 +69,7 @@ public class WishlistController {
 
     //Viser listen af ønsker.
     @GetMapping("/wishes")
-    public String viewWishes(Model model, Principal principal, HttpSession session){
+    public String viewWishes(Model model, HttpSession session){
         String username = (String) session.getAttribute("username");
 
         if (!isLoggedIn(session)) {
@@ -87,17 +87,28 @@ public class WishlistController {
         return "wishList";
     }
 
-    //Dykker ned i et ønske.
     @GetMapping("/wishes/{name}")
-    public String getWishByName(@PathVariable String name, Model model){
-        WishlistModel wish = wishlistService.getWishByName(name);
-        if (wish != null){
-            model.addAttribute("wish",wish);
-            return "wish-items";
-        } else {
-            return null;
-        }
+    public String showWishlistOfUser(@PathVariable String name,HttpSession session, Model model){
+        String username = (String) session.getAttribute("username");
+        List<Item> userWishes = wishlistService.getWishItemsOfUser(username,name);
+        model.addAttribute("nameOfWishlist", name);
+        model.addAttribute("wishList",userWishes);
+        return "wish-items";
     }
+
+    //Dykker ned i et ønskelistes item.
+    @GetMapping("/wishes/{name}/{item}")
+    public String showWishlistItemOfUser(@PathVariable String name, @PathVariable String item, HttpSession session, Model model){
+        String username = (String) session.getAttribute("username");
+        Item wishItem = wishlistService.getSpecificWishItemOfUser(username,name,item);
+        if (wishItem == null){
+            return "error";
+        }
+
+        model.addAttribute("wishItem", wishItem);
+        return "wishlist-details";
+    }
+
 
     //Opretter et nyt ønskeliste.
     @GetMapping("/wishes/add")
@@ -106,6 +117,8 @@ public class WishlistController {
         model.addAttribute("wish",wish);
         return "add-wish";
     }
+
+
 
     //Gemmer et nyt ønske.
     @PostMapping("/wishes/save")

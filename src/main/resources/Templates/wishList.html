@@ -16,13 +16,13 @@
         <th class="th">Beskrivelse</th>
         <th class="th">Handlinger</th>
     </tr>
-    <tr th:each="wishlist : ${wishes}">
-        <td class="td" th:text="${wishlist.name}"></td>
-        <td class="td" th:text="${wishlist.description}"></td>
+    <tr th:each="wishlistitem : ${wishes}">
+        <td class="td" th:text="${wishlistitem.name}"></td>
+        <td class="td" th:text="${wishlistitem.description}"></td>
         <td>
-            <a class="links-button" th:href="@{'/wishes/' + ${wishlist.name}}">Vælg</a>
-            <a class="links-button" th:href="@{'/wishes/' + ${wishlist.name} + '/edit'}">Rediger</a>
-            <form th:action="@{'/wishes/' + ${wishlist.name} + '/delete'}" method="post" style="display: inline">
+            <a class="links-button" th:href="@{'/wishes/' + ${wishlistitem.name}}">Vælg</a>
+            <a class="links-button" th:href="@{'/wishes/' + ${wishlistitem.name} + '/edit'}">Rediger</a>
+            <form th:action="@{'/wishes/' + ${wishlistitem.name} + '/delete'}" method="post" style="display: inline">
                 <button class="links-buttondelete" type="submit">Slet</button>
             </form>
         </td>

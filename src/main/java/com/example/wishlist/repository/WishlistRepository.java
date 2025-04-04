@@ -1,5 +1,6 @@
 package com.example.wishlist.repository;
 
+import com.example.wishlist.model.Item;
 import com.example.wishlist.model.User;
 import com.example.wishlist.model.WishlistModel;
 import org.springframework.dao.DuplicateKeyException;
@@ -10,7 +11,10 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public class WishlistRepository {
@@ -55,7 +59,7 @@ public class WishlistRepository {
     //Henter et ønske ud fra navnet. (Read funktion)
     public WishlistModel getWishByName(String name){
         try {
-            String sql = "SELECT * FROM wishlists.items WHERE name = ?";
+            String sql = "SELECT * FROM wishlist.items WHERE name = ?";
             return jdbcTemplate.queryForObject(sql,mapWishes(),name);
         } catch (EmptyResultDataAccessException e){
             return null;
@@ -71,6 +75,27 @@ public class WishlistRepository {
     public List<WishlistModel> getWishlistsByUserId(int userId) {
         String sql = "SELECT * FROM wishlists WHERE user_id = ?";
         return jdbcTemplate.query(sql, mapWishes(), userId);
+    }
+
+    public List<Item> getWishItemsOfUser(int wishlistId){
+        try {
+        String sql = "SELECT wi.id AS item_id, wi.name AS item_name, wi.description AS item_description " +
+                "FROM wishlist_items wi WHERE wi.wishlist_id = ?";
+        return jdbcTemplate.query(sql, mapItems(),wishlistId);
+        } catch (EmptyResultDataAccessException e){
+            return null;
+        }
+    }
+
+    public int getWishlistIdByName(String username, String wishlistName) {
+        try {
+        String sql = "SELECT w.id FROM wishlists w " +
+                "JOIN users u ON w.user_id = u.id " +
+                "WHERE u.username = ? AND w.name = ?";
+        return jdbcTemplate.queryForObject(sql, Integer.class, username, wishlistName);
+        } catch (EmptyResultDataAccessException e){
+            return -1;
+        }
     }
 
     //Opdaterer et ønske, hvis der opstår en ændring. (Update funktion)
@@ -93,6 +118,15 @@ public class WishlistRepository {
             rs.getString("description")
         );
     }
+
+    private RowMapper<Item> mapItems(){
+        return (rs, rowNum) -> new Item(
+                rs.getInt("item_id"),
+                rs.getString("item_name"),
+                rs.getString("item_description")
+        );
+    }
+
 
     private RowMapper<User> mapUsers(){
         return (rs, rowNum) -> new User(
