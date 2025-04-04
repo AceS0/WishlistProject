@@ -1,21 +1,137 @@
 .header{
-    font-family: 'Trebuchet MS', sans-serif;
-    color: #006064;
+    display: flex;
+    justify-content: space-between;
+
+}
+
+h1{
+    font-family: Copperplate, Papyrus, fantasy;
+    color: ghostwhite;
     font-size: 2.5rem;
     text-align: center;
     margin-top: 1.5rem;
     text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
-    border-bottom: 2px solid #00838f;
+    border-bottom: 2px solid white;
     padding-bottom: 10px;
+}
+/* Container til knapper */
+.button-container {
+    display: flex;
+    align-items: center;
+    margin-top: 1rem;
+    margin-right: 1rem;
+}
+
+/* Login button styling */
+.login-button {
+    margin-left: 10px;
+    padding: 10px 15px;
+    background-color: transparent;
+    color: ghostwhite;
+    border: 2px solid gold;
+    border-radius: 5px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.login-button:hover {
+    background-color: gold;
+    color: darkslategray;
+    box-shadow: 0 0 8px rgba(255, 215, 0, 0.6);
+}
+
+/* Opret button styling */
+.opret-button {
+    background-color: gold;
+    color: darkslategray;
+    padding: 10px 15px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: bold;
+    margin-left: 10px;
+    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.opret-button:hover {
+    background-color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(255, 215, 0, 0.4);
+}
+
+.opret-button:active {
+    transform: translateY(1px);
+}
+
+.ønskeseddel {
+    background-color: gold;
+    color: darkslategray;
+    padding: 12px 20px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: large;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: bold;
+    margin-top: 15px;
+    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.ønskeseddel:hover {
+    background-color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(255, 215, 0, 0.4);
+}
+
+.ønskeseddel:active {
+    transform: translateY(1px);
 }
 
 
 
+.paragraph{
+    font-family:'Bebas Neue', sans-serif;
+    font-size: x-large;
+    color: gold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    flex-direction: inherit;
+}
+
+
+
+
+
+body{
+    background-color: darkslategray;
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+
 .footer{
     margin-top: auto;
-    background-color: #006064;
+    background-color: black;
     color: white;
     text-align: center;
     padding: 15px;
     font-size: 0.9rem;
+    grid-area: auto;
+
 }
