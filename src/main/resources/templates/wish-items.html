@@ -8,8 +8,8 @@
 <body>
 <h1 class="header1">Dine ønsker:</h1>
 <div class="flex-center">
-    <a class="add-wish" href="/wishes">Gå tilbage</a>
-    <a class="add-wish" href="/wishes/addwish">Tilføj et ønske</a>
+    <a class="add-wish" href="/wishlist">Gå tilbage</a>
+    <a class="add-wish" href="/wishlist/addwish">Tilføj et ønske</a>
 </div>
 <table class="table">
     <tr>
@@ -17,21 +17,21 @@
         <th class="th">Beskrivelse</th>
         <th class="th">Handlinger</th>
     </tr>
-    <tr th:each="wishItem : ${wishList}">
+    <tr th:each="wishItem : ${wishlist}">
         <td class="td" th:text="${wishItem.name}"></td>
         <td class="td" th:text="${wishItem.description}"></td>
         <td>
-            <a class="links-button" th:href="@{'/wishes/' + ${nameOfWishlist}  + '/'+ ${wishItem.name}}">Vælg</a>
-            <a class="links-button" th:href="@{'/wishes/' + ${nameOfWishlist} + '/'  + ${wishItem.name} + '/edit'}">Rediger</a>
-            <form th:action="@{'/wishes/' + ${nameOfWishlist} + '/' + ${wishItem.name} + '/delete'}" method="post" style="display: inline">
+            <a class="links-button" th:href="@{'/wishlist/' + ${nameOfWishlist}  + '/'+ ${wishItem.name}}">Vælg</a>
+            <a class="links-button" th:href="@{'/wishlist/' + ${nameOfWishlist} + '/'  + ${wishItem.name} + '/edit'}">Rediger</a>
+            <form th:action="@{'/wishlist/' + ${nameOfWishlist} + '/' + ${wishItem.name} + '/delete'}" method="post" style="display: inline">
                 <button class="links-buttondelete" type="submit">Slet</button>
             </form>
         </td>
     </tr>
 </table>
 <div style="text-align: center; margin-top: 20px;">
-    <a href="/wishes/register">Opret bruger</a> |
-    <a href="/wishes/login">Login</a> |
+    <a href="/wishlist/register">Opret bruger</a> |
+    <a href="/wishlist/login">Login</a> |
     <a href="/">Forside</a>
 </div>
 </body>

@@ -17,8 +17,8 @@ public class WishlistService {
         this.wishlistRepository = wishlistRepository;
     }
 
-    public void addWish(WishlistModel wish, int userId){
-        wishlistRepository.addWish(wish,userId);
+    public void addWish(WishlistModel wishlist, int userId){
+        wishlistRepository.addWish(wishlist,userId);
     }
 
 
