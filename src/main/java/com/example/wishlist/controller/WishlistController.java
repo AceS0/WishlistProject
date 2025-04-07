@@ -57,6 +57,11 @@ public class WishlistController {
             return "redirect:/wishes/register";
         }
 
+        if (pw.length() < 8) {
+            redirectAttributes.addFlashAttribute("error","Password is too short. Must be at least 8 characters.");
+            return "redirect:/wishes/register";
+        }
+
         if (!wishlistService.register(uid, pw)) {
             redirectAttributes.addFlashAttribute("error", "Account already exists.");
             return "redirect:/wishes/register";
@@ -112,7 +117,10 @@ public class WishlistController {
 
     //Opretter et nyt ønskeliste.
     @GetMapping("/wishes/add")
-    public String showAddWishForm(Model model){
+    public String showAddWishForm(Model model, HttpSession session){
+        if (!isLoggedIn(session)) {
+            return "redirect:/wishes/login";  // går tilbage til login hvis ikke autoriseret
+        }
         WishlistModel wish = new WishlistModel();
         model.addAttribute("wish",wish);
         return "add-wish";
