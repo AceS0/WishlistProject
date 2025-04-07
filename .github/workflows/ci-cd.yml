@@ -1,0 +1,30 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - "*"
+
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Tjek kode ud
+        uses: actions/checkout@v3
+
+      - name: Opsæt JDK 21
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+
+      - name: Byg med Maven
+        env:
+          DEV_DATABASE_URL: ${{ secrets.DB_URL }}
+          DEV_USERNAME: ${{ secrets.DB_USERNAME }}
+          DEV_PASSWORD: ${{ secrets.DB_PASSWORD }}
+        
+        run: mvn clean package
+
+      - name: Kør tests
+        run: mvn test
