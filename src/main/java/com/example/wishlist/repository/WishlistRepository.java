@@ -9,12 +9,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Repository
 public class WishlistRepository {
@@ -53,14 +48,14 @@ public class WishlistRepository {
     //Lister alle ønsker. (Read funktion)
     public List<WishlistModel> getAllWishes(){
         String sql = "SELECT * FROM wishlists";
-        return jdbcTemplate.query(sql, mapWishes());
+        return jdbcTemplate.query(sql, mapWishlist());
     }
 
     //Henter et ønske ud fra navnet. (Read funktion)
     public WishlistModel getWishByName(String name){
         try {
-            String sql = "SELECT * FROM wishlist.items WHERE name = ?";
-            return jdbcTemplate.queryForObject(sql,mapWishes(),name);
+            String sql = "SELECT * FROM wishlists WHERE name = ?";
+            return jdbcTemplate.queryForObject(sql, mapWishlist(),name);
         } catch (EmptyResultDataAccessException e){
             return null;
         }
@@ -74,7 +69,7 @@ public class WishlistRepository {
 
     public List<WishlistModel> getWishlistsByUserId(int userId) {
         String sql = "SELECT * FROM wishlists WHERE user_id = ?";
-        return jdbcTemplate.query(sql, mapWishes(), userId);
+        return jdbcTemplate.query(sql, mapWishlist(), userId);
     }
 
     public int getWishlistIdByuserId(int userId, String listName){
@@ -86,7 +81,7 @@ public class WishlistRepository {
         try {
         String sql = "SELECT wi.id AS item_id, wi.name AS item_name, wi.description AS item_description " +
                 "FROM wishlist_items wi WHERE wi.wishlist_id = ?";
-        return jdbcTemplate.query(sql, mapItems(),wishlistId);
+        return jdbcTemplate.query(sql, mapWishItems(),wishlistId);
         } catch (EmptyResultDataAccessException e){
             return null;
         }
@@ -122,7 +117,7 @@ public class WishlistRepository {
         return rowsAffected > 0;
     }
 
-    private RowMapper<WishlistModel> mapWishes(){
+    private RowMapper<WishlistModel> mapWishlist(){
     return (rs, rowNum) -> new WishlistModel(
             rs.getInt("id"),
             rs.getString("name"),
@@ -130,7 +125,7 @@ public class WishlistRepository {
         );
     }
 
-    private RowMapper<Item> mapItems(){
+    private RowMapper<Item> mapWishItems(){
         return (rs, rowNum) -> new Item(
                 rs.getInt("item_id"),
                 rs.getString("item_name"),

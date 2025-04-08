@@ -17,7 +17,7 @@
         <th class="th">Beskrivelse</th>
         <th class="th">Handlinger</th>
     </tr>
-    <tr th:each="wishItem : ${wishlist}">
+    <tr th:each="wishItem : ${wishList}">
         <td class="td" th:text="${wishItem.name}"></td>
         <td class="td" th:text="${wishItem.description}"></td>
         <td>

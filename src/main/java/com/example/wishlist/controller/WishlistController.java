@@ -162,8 +162,10 @@ public class WishlistController {
 
     //Sletter en ønskeliste.
     @PostMapping("/wishlist/{name}/delete")
-    public String deleteWish(@PathVariable String name){
-        boolean deleted = wishlistService.deleteWish(name);
+    public String deleteWishlist(@PathVariable String name, HttpSession session){
+        String username = (String) session.getAttribute("username");
+        int userId = wishlistService.getUserIdByUsername(username);
+        boolean deleted = wishlistService.deleteWishlist(userId,name);
         if (deleted) {
             return "redirect:/wishlist";
         } else {
