@@ -153,10 +153,14 @@ public class WishlistController {
 
     //Ændre en ønskeliste
     @GetMapping("/wishlist/{name}/edit")
-    public String editWish(@PathVariable String name, Model model){
+    public String editWish(@PathVariable String name, Model model,HttpSession session){
+        String username = (String) session.getAttribute("username");
+        int userId = wishlistService.getUserIdByUsername(username);
+        int listId = wishlistService.getWishlistIdByUserId(userId,name);
         WishlistModel wish = wishlistService.getWishByName(name);
         if (wish != null){
 
+            wish.setId(listId);
             model.addAttribute("wishlist", wish);
             return "edit-wishlist";
         } else {

@@ -100,8 +100,13 @@ public class WishlistRepository {
 
     //Opdaterer et ønske, hvis der opstår en ændring. (Update funktion)
     public void updateWish(WishlistModel updatedWish){
-        String sql = "UPDATE wishlists SET description = ? WHERE name = ?";
-        jdbcTemplate.update(sql,updatedWish.getDescription(),updatedWish.getName());
+        String sql = "UPDATE wishlists SET name = ?, description = ? WHERE id = ?";
+        System.out.println(updatedWish.getId());
+        jdbcTemplate.update(sql,updatedWish.getName(),updatedWish.getDescription(),updatedWish.getId());
+    }
+
+    public void updateWishname(){
+
     }
 
     //Sletter et ønskeliste. (Delete funktion)
