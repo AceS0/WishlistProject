@@ -17,8 +17,12 @@ public class WishlistService {
         this.wishlistRepository = wishlistRepository;
     }
 
-    public void addWish(WishlistModel wishlist, int userId){
-        wishlistRepository.addWish(wishlist,userId);
+    public void addWishList(WishlistModel wishlist, int userId){
+        wishlistRepository.addWishList(wishlist,userId);
+    }
+
+    public void addWish(Item wish, int listId){
+        wishlistRepository.addWish(wish,listId);
     }
 
 
@@ -54,7 +58,11 @@ public class WishlistService {
                 .orElse(null);
     }
 
-    public void updateWish(WishlistModel updatedWish){
+    public void updateWishList(WishlistModel updatedWishList){
+        wishlistRepository.updateWishList(updatedWishList);
+    }
+
+    public void updateWish(Item updatedWish){
         wishlistRepository.updateWish(updatedWish);
     }
 
@@ -67,8 +75,8 @@ public class WishlistService {
         return wishlistRepository.deleteWishlist(userId,name);
     }
 
-    public boolean deleteWish(int listId, String listname){
-        return wishlistRepository.deleteWish(listId,listname);
+    public boolean deleteWish(int listId, String wishname){
+        return wishlistRepository.deleteWish(listId,wishname);
     }
 
     public String encodePassword(String password) {

@@ -137,29 +137,60 @@ public class WishlistController {
         return "add-wishlist";
     }
 
+    @GetMapping("/wishlist/{name}/{id}/add")
+    public String showAddWishForm(@PathVariable String name, @PathVariable String id, Model model, HttpSession session){
+        if (!isLoggedIn(session)){
+            return "redirect:/wishlist/login";
+        }
+        Item wish = new Item();
+        model.addAttribute("wish",wish);
+        return "add-wish";
+    }
 
 
     //Gemmer en ny ønskeliste.
     @PostMapping("/wishlist/save")
-    public String saveWish(@ModelAttribute WishlistModel wishlist, HttpSession seesion){
+    public String saveWishlist(@ModelAttribute WishlistModel wishlist, HttpSession seesion){
         String username = (String) seesion.getAttribute("username");
         int userId = wishlistService.getUserIdByUsername(username);
         if (userId == -1) {
             return "error";
         }
-        wishlistService.addWish(wishlist,userId);
+        wishlistService.addWishList(wishlist,userId);
         return "redirect:/wishlist";
     }
 
+    @PostMapping("/wishlist/{name}/{id}/save")
+    public String saveWish(@ModelAttribute Item wish, @PathVariable String id){
+        int listId = Integer.parseInt(id);
+        wishlistService.addWish(wish,listId);
+        return "redirect:/wishlist";
+    }
+
+
+
     //Ændre en ønskeliste
     @GetMapping("/wishlist/{name}/{id}/edit")
-    public String editWish(@PathVariable String name,@PathVariable String id, Model model){
-        WishlistModel wish = wishlistService.getWishByName(name);
+    public String editWishList(@PathVariable String name,@PathVariable String id, Model model){
+        WishlistModel wishlist = wishlistService.getWishByName(name);
+        if (wishlist != null){
+
+            wishlist.setId(Integer.parseInt(id));
+            model.addAttribute("wishlist", wishlist);
+            return "edit-wishlist";
+        } else {
+            return null;
+        }
+    }
+
+    @GetMapping("/wishlist/{name}/{id}/{item}/edit")
+    public String editWIsh(@PathVariable String name, @PathVariable String id, @PathVariable String item, Model model){
+        Item wish = wishlistService.getSpecificWishItemOfUser(Integer.parseInt(id),item);
         if (wish != null){
 
             wish.setId(Integer.parseInt(id));
-            model.addAttribute("wishlist", wish);
-            return "edit-wishlist";
+            model.addAttribute("wish", wish);
+            return "edit-wish";
         } else {
             return null;
         }
@@ -167,8 +198,14 @@ public class WishlistController {
 
     //Gemmer ændringen - altså opdaterer en ønskeliste.
     @PostMapping("/wishlist/update")
-    public String updateWish(@ModelAttribute WishlistModel updatedWish) {
-        wishlistService.updateWish(updatedWish);
+    public String updateWishlist(@ModelAttribute WishlistModel updatedWishList) {
+        wishlistService.updateWishList(updatedWishList);
+        return "redirect:/wishlist";
+    }
+
+    @PostMapping("/wishlist/{name}/{id}/{item}/update")
+    public String updateWish(@ModelAttribute Item updatedwish){
+        wishlistService.updateWish(updatedwish);
         return "redirect:/wishlist";
     }
 
@@ -190,7 +227,7 @@ public class WishlistController {
     public String deleteWish(@PathVariable String id,@PathVariable String wishname){
         boolean deleted = wishlistService.deleteWish(Integer.parseInt(id),wishname);
         if (deleted) {
-            return "redirect:/wishlist/{listname}{id}";
+            return "redirect:/wishlist";
         } else {
             return null;
         }

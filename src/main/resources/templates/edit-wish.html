@@ -2,10 +2,29 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Rediger Ønske</title>
+    <link rel="stylesheet" th:href="@{/addWishList.css}">
 </head>
 <body>
-<h1>edit wishlist</h1>
+<h1>Rediger Ønske</h1>
+
+<form action="#" th:action="@{/wishlist/{name}/{id}/{wish}/update(name=${name}, id=${id})}" th:object="${wish}" method="post">
+    <input type="hidden" th:field="*{id}"/>
+
+    <div>
+        <label for="name">Navn:</label>
+        <input type="text" id="name" th:field="*{name}" required>
+    </div>
+    <div>
+        <label for="description">Beskrivelse:</label>
+        <input type="text" id="description" th:field="*{description}" required>
+    </div>
+
+    <div class="button-group">
+        <button type="submit">Gem</button>
+        <a th:href="@{/wishlist}" class="button">Annuller</a>
+    </div>
+</form>
 
 </body>
 </html>

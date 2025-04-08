@@ -34,12 +34,21 @@ public class WishlistRepository {
     }
 
     //Tilføjer et ønske til databasen. (Create funktion)
-    public void addWish(WishlistModel wish, int userId){
+    public void addWishList(WishlistModel wishlist, int userId){
         try {
 
             String sql = "INSERT INTO wishlists (user_id,name, description) VALUES (?,?,?)";
-            jdbcTemplate.update(sql,userId,wish.getName(),wish.getDescription());
+            jdbcTemplate.update(sql,userId,wishlist.getName(),wishlist.getDescription());
 
+        } catch (DuplicateKeyException ignored){
+        }
+    }
+
+    public void addWish(Item wish, int listId){
+        try {
+            String sql = "INSERT INTO wishlist_items (wishlist_id, name, description) VALUES (?,?,?)";
+            System.out.println("Navn: " +wish.getName() + "Desc: " + wish.getDescription());
+            jdbcTemplate.update(sql,listId,wish.getName(),wish.getDescription());
         } catch (DuplicateKeyException ignored){
         }
     }
@@ -99,9 +108,13 @@ public class WishlistRepository {
     }
 
     //Opdaterer et ønske, hvis der opstår en ændring. (Update funktion)
-    public void updateWish(WishlistModel updatedWish){
+    public void updateWishList(WishlistModel updatedWishList){
         String sql = "UPDATE wishlists SET name = ?, description = ? WHERE id = ?";
-        System.out.println(updatedWish.getId());
+        jdbcTemplate.update(sql,updatedWishList.getName(),updatedWishList.getDescription(),updatedWishList.getId());
+    }
+
+    public void updateWish(Item updatedWish){
+        String sql = "UPDATE wishlist_items SET name = ?, description = ? WHERE wishlist_id = ?";
         jdbcTemplate.update(sql,updatedWish.getName(),updatedWish.getDescription(),updatedWish.getId());
     }
 
@@ -112,9 +125,9 @@ public class WishlistRepository {
         return rowsAffected > 0;
     }
 
-    public boolean deleteWish(int listId, String listname){
+    public boolean deleteWish(int listId, String wishname){
         String sql = "DELETE FROM wishlist_items WHERE wishlist_id = ? AND name = ?";
-        int rowsAffected = jdbcTemplate.update(sql,listId,listname);
+        int rowsAffected = jdbcTemplate.update(sql,listId,wishname);
         return rowsAffected > 0;
     }
 

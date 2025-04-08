@@ -9,7 +9,7 @@
 <h1 class="header1">Dine ønsker:</h1>
 <div class="flex-center">
     <a class="add-wish" href="/wishlist">Gå tilbage</a>
-    <a class="add-wish" href="/wishlist/addwish">Tilføj et ønske</a>
+    <a class="add-wish" th:href="@{'/wishlist/' + ${nameOfWishlist} + '/' + ${wishItemId} + '/add'}">Tilføj et ønske</a>
 </div>
 <table class="table">
     <tr>
@@ -31,7 +31,7 @@
                        onclick="toggleChecked(this)">
             </label>
             <a class="links-button" th:href="@{'/wishlist/' + ${nameOfWishlist} + '/' + ${wishItemId} + '/'  + ${wishItem.name} + '/edit'}">Rediger</a>
-            <form th:action="@{'/wishlist/' + ${nameOfWishlist} + '/' + ${wishItem.id} + '/' + ${wishItem.name} + '/delete'}" method="post" style="display: inline">
+            <form th:action="@{'/wishlist/' + ${nameOfWishlist} + '/' + ${wishItemId} + '/' + ${wishItem.name} + '/delete'}" method="post" style="display: inline">
                 <button class="links-buttondelete" type="submit">Slet</button>
             </form>
         </td>

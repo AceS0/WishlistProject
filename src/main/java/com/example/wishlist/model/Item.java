@@ -15,6 +15,9 @@ public class Item {
         this.checked = checked;
     }
 
+    public Item(){
+    }
+
 
     public int getId() {
         return id;
