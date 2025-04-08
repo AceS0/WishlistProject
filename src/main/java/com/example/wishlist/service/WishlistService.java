@@ -42,13 +42,12 @@ public class WishlistService {
         return wishlistRepository.getWishlistIdByuserId(userId,listName);
     }
 
-    public List<Item> getWishItemsOfUser(String username, String wishlistname){
-        int wishlistId = wishlistRepository.getWishlistIdByName(username,wishlistname);
-        return wishlistRepository.getWishItemsOfUser(wishlistId);
+    public List<Item> getWishItemsOfUser(int id){
+        return wishlistRepository.getWishItemsOfUser(id);
     }
 
-    public Item getSpecificWishItemOfUser(String username, String wishlistName, String itemName){
-        List<Item> userItems = getWishItemsOfUser(username, wishlistName); // Get all items in the wishlist
+    public Item getSpecificWishItemOfUser(int id, String itemName){
+        List<Item> userItems = getWishItemsOfUser(id); // Get all items in the wishlist
         return userItems.stream()
                 .filter(item -> item.getName().equalsIgnoreCase(itemName))
                 .findFirst()
