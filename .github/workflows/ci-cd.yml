@@ -30,9 +30,9 @@ jobs:
         run: mvn test
 
       - name: Upload JAR artifact
-        uses: actions/upload-artifact@v2  
+        uses: actions/upload-artifact@v3
         with:
-          name: java-app  
+          name: java-app
           path: target/*.jar 
 
   deploy:
@@ -45,7 +45,7 @@ jobs:
       - name: Download artefakt
         uses: actions/download-artifact@v4
         with:
-          name: java-app 
+          name: java-app
 
       - name: Login til Azure
         uses: azure/login@v2
@@ -59,4 +59,4 @@ jobs:
         with:
           app-name: 'WishlistprojectARE'
           slot-name: 'Production'
-          package: './java-app/*.jar' 
+          package: './java-app/*.jar'
