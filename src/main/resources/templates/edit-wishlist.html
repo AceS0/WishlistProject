@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Rediger Ønskeliste</title>
+</head>
+<body>
+<h1>Rediger Ønskeliste</h1>
+
+<form action="#" th:action="@{/wishlist/{name}/edit}" th:object="${wishlist}" method="post">
+  <div>
+    <label for="name">Navn:</label>
+    <input type="text" id="name" th:field="*{name}" required>
+  </div>
+  <div>
+    <label for="description">Beskrivelse:</label>
+    <input type="text" id="description" th:field="*{description}" required>
+  </div>
+
+  <div> class="button-group">
+    <button type="submit">Gem</button>
+    <a th:href="@{/wishlist}" class="button">Annuller</a>
+  </div>
+</form>
+
+</body>
+</html>
