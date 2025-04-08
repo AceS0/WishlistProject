@@ -33,7 +33,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: java-app  
-          path: target/*.jar  
+          path: target/*.jar 
 
   deploy:
     needs: build-test
