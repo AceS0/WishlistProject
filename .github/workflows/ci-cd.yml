@@ -3,7 +3,7 @@ name: CI/CD Pipeline
 on:
   push:
     branches:
-      - "*"
+      - "main"
 
 jobs:
   build-test:
@@ -23,17 +23,10 @@ jobs:
           DEV_DATABASE_URL: ${{ secrets.DB_URL }}
           DEV_USERNAME: ${{ secrets.DB_USERNAME }}
           DEV_PASSWORD: ${{ secrets.DB_PASSWORD }}
-        
         run: mvn clean package
 
       - name: Kør tests
         run: mvn test
-
-      - name: Upload JAR artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: java-app
-          path: target/*.jar 
 
   deploy:
     needs: build-test
@@ -59,4 +52,3 @@ jobs:
         with:
           app-name: 'WishlistprojectARE'
           slot-name: 'Production'
-          package: './java-app/*.jar'
