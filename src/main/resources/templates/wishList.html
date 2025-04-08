@@ -20,9 +20,9 @@
         <td class="td name" th:text="${wishlistitem.name}"></td>
         <td class="td description" th:text="${wishlistitem.description}"></td>
         <td>
-            <a class="links-button" th:href="@{'/wishlist/' + ${wishlistitem.name}}">Vælg</a>
-            <a class="links-button" th:href="@{'/wishlist/' + ${wishlistitem.name} + '/edit'}">Rediger</a>
-            <form th:action="@{'/wishlist/' + ${wishlistitem.name} + '/delete'}" method="post" style="display: inline">
+            <a class="links-button" th:href="@{'/wishlist/' + ${wishlistitem.name} + '/' + ${wishlistitem.id}}">Vælg</a>
+            <a class="links-button" th:href="@{'/wishlist/' + ${wishlistitem.name} + '/' + ${wishlistitem.id} + '/edit'}">Rediger</a>
+            <form th:action="@{'/wishlist/' + ${wishlistitem.name} + '/' + ${wishlistitem.id} + '/delete'}" method="post" style="display: inline">
                 <button class="links-buttondelete" type="submit">Slet</button>
             </form>
         </td>
@@ -36,22 +36,3 @@
 </div>
 </body>
 </html>
-<script>
-    function toggleChecked(checkbox, itemId) {
-        const isChecked = checkbox.checked;
-
-        fetch(`/wishlist/${itemId}/toggle`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ checked: isChecked })
-        }).then(response => {
-            if (!response.ok) {
-                console.error("Failed to update checked state");
-            }
-        }).catch(error => {
-            console.error("Error:", error);
-        });
-    }
-</script>

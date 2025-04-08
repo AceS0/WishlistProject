@@ -105,10 +105,6 @@ public class WishlistRepository {
         jdbcTemplate.update(sql,updatedWish.getName(),updatedWish.getDescription(),updatedWish.getId());
     }
 
-    public void updateWishname(){
-
-    }
-
     //Sletter et ønskeliste. (Delete funktion)
     public boolean deleteWishlist(int userId, String name){
         String sql = "DELETE FROM wishlists WHERE user_id = ? AND name = ?";

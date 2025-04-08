@@ -30,8 +30,8 @@
                        th:data-item-name="${wishItem.name}"
                        onclick="toggleChecked(this)">
             </label>
-            <a class="links-button" th:href="@{'/wishlist/' + ${nameOfWishlist} + '/'  + ${wishItem.name} + '/edit'}">Rediger</a>
-            <form th:action="@{'/wishlist/' + ${nameOfWishlist} + '/' + ${wishItem.name} + '/delete'}" method="post" style="display: inline">
+            <a class="links-button" th:href="@{'/wishlist/' + ${nameOfWishlist} + '/' + ${wishItemId} + '/'  + ${wishItem.name} + '/edit'}">Rediger</a>
+            <form th:action="@{'/wishlist/' + ${nameOfWishlist} + '/' + ${wishItem.id} + '/' + ${wishItem.name} + '/delete'}" method="post" style="display: inline">
                 <button class="links-buttondelete" type="submit">Slet</button>
             </form>
         </td>
