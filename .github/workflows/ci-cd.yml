@@ -3,7 +3,7 @@ name: CI/CD Pipeline
 on:
   push:
     branches:
-      - "*"
+      - "main"
 
 jobs:
   build-test:
@@ -28,3 +28,28 @@ jobs:
 
       - name: Kør tests
         run: mvn test
+
+  deploy:
+    needs: build-test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Tjek kode ud
+        uses: actions/checkout@v3
+
+      - name: Download artefakt
+        uses: actions/download-artifact@v4
+        with:
+          name: java-app 
+
+      - name: Login til Azure
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Deploy til Azure Web App
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: 'WishlistprojectARE'
+          slot-name: 'Production'
