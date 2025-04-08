@@ -24,6 +24,11 @@ public class WishlistController {
         return session.getAttribute("username") != null;
     }
 
+    @GetMapping("/")
+    public String showHomePage() {
+        return "index";
+    }
+
     @GetMapping("/wishlist/login")
     public String showLogin(){
         return "login";
@@ -43,6 +48,12 @@ public class WishlistController {
 
         model.addAttribute("wrongCredentials",true);
         return "login";
+    }
+
+    @RequestMapping(value = "/wishlist/logout", method = {RequestMethod.GET, RequestMethod.POST})
+    public String logout(HttpSession session){
+        session.invalidate();
+        return "redirect:/";
     }
 
     @GetMapping("/wishlist/register")
@@ -185,5 +196,22 @@ public class WishlistController {
         } else {
             return null;
         }
+    }
+
+    @PostMapping("/wishlist/{listname}/{wishname}/toggle")
+    public String toggleWishItemChecked(@PathVariable String listname, @PathVariable String wishname, HttpSession session){
+        String username = (String) session.getAttribute("username");
+        Item wishItem = wishlistService.getSpecificWishItemOfUser(username,listname,wishname);
+        if (wishItem == null){
+            return "error";
+        }
+
+        wishItem.setChecked(!wishItem.isChecked());
+
+        boolean checked = wishlistService.updateWishItemChecked(wishItem.isChecked(),username,wishname,listname);
+        if (!checked){
+            return "error";
+        }
+        return "redirect:/wishlist/" + listname;
     }
 }

@@ -59,6 +59,11 @@ public class WishlistService {
         wishlistRepository.updateWish(updatedWish);
     }
 
+    public boolean updateWishItemChecked(boolean checked, String username, String wishname, String wishlistname){
+        int wishlistId = wishlistRepository.getWishlistIdByName(username,wishlistname);
+        return wishlistRepository.updateWishItemChecked(checked,wishlistId,wishname);
+    }
+
     public boolean deleteWishlist(int userId, String name){
         return wishlistRepository.deleteWishlist(userId,name);
     }
