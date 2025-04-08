@@ -57,6 +57,6 @@ jobs:
       - name: Deploy til Azure Web App
         uses: azure/webapps-deploy@v3
         with:
-          app-name: 'DIT-AZURE-NAVN'
+          app-name: 'WishlistprojectARE'
           slot-name: 'Production'
           package: 'target/*.jar'  
