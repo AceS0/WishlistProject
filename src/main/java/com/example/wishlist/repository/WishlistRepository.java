@@ -79,8 +79,8 @@ public class WishlistRepository {
 
     public List<Item> getWishItemsOfUser(int wishlistId){
         try {
-        String sql = "SELECT wi.id AS item_id, wi.name AS item_name, wi.description AS item_description " +
-                "FROM wishlist_items wi WHERE wi.wishlist_id = ?";
+            String sql = "SELECT wi.id AS item_id, wi.name AS item_name, wi.description AS item_description, wi.checked AS item_checked " +
+                    "FROM wishlist_items wi WHERE wi.wishlist_id = ?";
         return jdbcTemplate.query(sql, mapWishItems(),wishlistId);
         } catch (EmptyResultDataAccessException e){
             return null;
@@ -100,8 +100,13 @@ public class WishlistRepository {
 
     //Opdaterer et ønske, hvis der opstår en ændring. (Update funktion)
     public void updateWish(WishlistModel updatedWish){
-        String sql = "UPDATE wishlists SET description = ? WHERE name = ?";
-        jdbcTemplate.update(sql,updatedWish.getDescription(),updatedWish.getName());
+        String sql = "UPDATE wishlists SET name = ?, description = ? WHERE id = ?";
+        System.out.println(updatedWish.getId());
+        jdbcTemplate.update(sql,updatedWish.getName(),updatedWish.getDescription(),updatedWish.getId());
+    }
+
+    public void updateWishname(){
+
     }
 
     //Sletter et ønskeliste. (Delete funktion)
@@ -117,6 +122,12 @@ public class WishlistRepository {
         return rowsAffected > 0;
     }
 
+    public boolean updateWishItemChecked(boolean checked, int listId, String wishname){
+        String sql = "UPDATE wishlist_items SET checked = ? WHERE wishlist_id = ? AND name = ?";
+        int rowsAffected = jdbcTemplate.update(sql,checked,listId,wishname);
+        return rowsAffected > 0;
+    }
+
     private RowMapper<WishlistModel> mapWishlist(){
     return (rs, rowNum) -> new WishlistModel(
             rs.getInt("id"),
@@ -129,7 +140,8 @@ public class WishlistRepository {
         return (rs, rowNum) -> new Item(
                 rs.getInt("item_id"),
                 rs.getString("item_name"),
-                rs.getString("item_description")
+                rs.getString("item_description"),
+                rs.getBoolean("item_checked")
         );
     }
 

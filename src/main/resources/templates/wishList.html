@@ -17,8 +17,8 @@
         <th class="th">Handlinger</th>
     </tr>
     <tr th:each="wishlistitem : ${wishlist}">
-        <td class="td" th:text="${wishlistitem.name}"></td>
-        <td class="td" th:text="${wishlistitem.description}"></td>
+        <td class="td name" th:text="${wishlistitem.name}"></td>
+        <td class="td description" th:text="${wishlistitem.description}"></td>
         <td>
             <a class="links-button" th:href="@{'/wishlist/' + ${wishlistitem.name}}">Vælg</a>
             <a class="links-button" th:href="@{'/wishlist/' + ${wishlistitem.name} + '/edit'}">Rediger</a>
@@ -31,7 +31,27 @@
 <div style="text-align: center; margin-top: 20px;">
     <a href="/wishlist/register">Opret bruger</a> |
     <a href="/wishlist/login">Login</a> |
+    <a href="/wishlist/logout">Log ud</a> |
     <a href="/">Forside</a>
 </div>
 </body>
 </html>
+<script>
+    function toggleChecked(checkbox, itemId) {
+        const isChecked = checkbox.checked;
+
+        fetch(`/wishlist/${itemId}/toggle`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ checked: isChecked })
+        }).then(response => {
+            if (!response.ok) {
+                console.error("Failed to update checked state");
+            }
+        }).catch(error => {
+            console.error("Error:", error);
+        });
+    }
+</script>

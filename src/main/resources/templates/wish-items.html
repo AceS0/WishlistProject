@@ -18,10 +18,18 @@
         <th class="th">Handlinger</th>
     </tr>
     <tr th:each="wishItem : ${wishList}">
-        <td class="td" th:text="${wishItem.name}"></td>
-        <td class="td" th:text="${wishItem.description}"></td>
+        <td class="td name" th:text="${wishItem.name}"
+            th:classappend="${wishItem.checked} ? 'checked' : ''"></td>
+        <td class="td description" th:text="${wishItem.description}"
+            th:classappend="${wishItem.checked} ? 'checked' : ''"></td>
         <td>
-            <a class="links-button" th:href="@{'/wishlist/' + ${nameOfWishlist}  + '/'+ ${wishItem.name}}">Vælg</a>
+            <label>
+                <input type="checkbox" class="check-button"
+                       th:checked="${wishItem.checked}"
+                       th:data-name-of-wishlist="${nameOfWishlist}"
+                       th:data-item-name="${wishItem.name}"
+                       onclick="toggleChecked(this)">
+            </label>
             <a class="links-button" th:href="@{'/wishlist/' + ${nameOfWishlist} + '/'  + ${wishItem.name} + '/edit'}">Rediger</a>
             <form th:action="@{'/wishlist/' + ${nameOfWishlist} + '/' + ${wishItem.name} + '/delete'}" method="post" style="display: inline">
                 <button class="links-buttondelete" type="submit">Slet</button>
@@ -32,7 +40,42 @@
 <div style="text-align: center; margin-top: 20px;">
     <a href="/wishlist/register">Opret bruger</a> |
     <a href="/wishlist/login">Login</a> |
+    <a href="/wishlist/logout">Log ud</a> |
     <a href="/">Forside</a>
 </div>
 </body>
 </html>
+
+<script>
+    function toggleChecked(checkbox) {
+        const nameOfWishlist = checkbox.getAttribute('data-name-of-wishlist');
+        const wishItemName = checkbox.getAttribute('data-item-name');
+        const row = checkbox.closest('tr');
+
+        const nameCell = row.querySelector('.name');
+        const descriptionCell = row.querySelector('.description');
+
+        if (checkbox.checked) {
+            nameCell.classList.add('checked');
+            descriptionCell.classList.add('checked');
+        } else {
+            nameCell.classList.remove('checked');
+            descriptionCell.classList.remove('checked');
+        }
+
+        fetch(`/wishlist/${nameOfWishlist}/${wishItemName}/toggle`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ checked: checkbox.checked })
+        }).then(response => {
+            if (!response.ok) {
+                console.error("Failed to update checked state");
+            }
+        }).catch(error => {
+            console.error("Error:", error);
+        });
+    }
+
+</script>

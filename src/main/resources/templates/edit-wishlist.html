@@ -7,7 +7,9 @@
 <body>
 <h1>Rediger Ønskeliste</h1>
 
-<form action="#" th:action="@{/wishlist/{name}/edit}" th:object="${wishlist}" method="post">
+<form action="#" th:action="@{/wishlist/update}" th:object="${wishlist}" method="post">
+  <input type="hidden" th:field="*{id}"/>
+
   <div>
     <label for="name">Navn:</label>
     <input type="text" id="name" th:field="*{name}" required>
@@ -17,7 +19,7 @@
     <input type="text" id="description" th:field="*{description}" required>
   </div>
 
-  <div> class="button-group">
+  <div class="button-group">
     <button type="submit">Gem</button>
     <a th:href="@{/wishlist}" class="button">Annuller</a>
   </div>
