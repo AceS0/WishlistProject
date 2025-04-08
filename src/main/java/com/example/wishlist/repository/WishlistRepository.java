@@ -53,13 +53,6 @@ public class WishlistRepository {
         }
     }
 
-
-    //Lister alle ønsker. (Read funktion)
-    public List<WishlistModel> getAllWishes(){
-        String sql = "SELECT * FROM wishlists";
-        return jdbcTemplate.query(sql, mapWishlist());
-    }
-
     //Henter et ønske ud fra navnet. (Read funktion)
     public WishlistModel getWishByName(String name){
         try {
@@ -79,11 +72,6 @@ public class WishlistRepository {
     public List<WishlistModel> getWishlistsByUserId(int userId) {
         String sql = "SELECT * FROM wishlists WHERE user_id = ?";
         return jdbcTemplate.query(sql, mapWishlist(), userId);
-    }
-
-    public int getWishlistIdByuserId(int userId, String listName){
-        String sql = "SELECT id FROM wishlists WHERE user_id = ? AND name = ?";
-        return jdbcTemplate.queryForObject(sql, Integer.class, userId, listName);
     }
 
     public List<Item> getWishItemsOfUser(int wishlistId){

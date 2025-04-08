@@ -25,11 +25,6 @@ public class WishlistService {
         wishlistRepository.addWish(wish,listId);
     }
 
-
-    public List<WishlistModel> getAllWishes(){
-        return wishlistRepository.getAllWishes();
-    }
-
     public WishlistModel getWishByName(String name){
         return wishlistRepository.getWishByName(name);
     }
@@ -40,10 +35,6 @@ public class WishlistService {
 
     public List<WishlistModel> getWishlistsByUserId(int userId) {
         return wishlistRepository.getWishlistsByUserId(userId);
-    }
-
-    public int getWishlistIdByUserId(int userId, String listName){
-        return wishlistRepository.getWishlistIdByuserId(userId,listName);
     }
 
     public List<Item> getWishItemsOfUser(int id){
