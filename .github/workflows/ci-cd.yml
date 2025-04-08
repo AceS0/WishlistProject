@@ -29,6 +29,12 @@ jobs:
       - name: Kør tests
         run: mvn test
 
+      - name: Upload JAR artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: java-app  
+          path: target/*.jar  
+
   deploy:
     needs: build-test
     runs-on: ubuntu-latest
@@ -51,5 +57,6 @@ jobs:
       - name: Deploy til Azure Web App
         uses: azure/webapps-deploy@v3
         with:
-          app-name: 'WishlistprojectARE'
+          app-name: 'DIT-AZURE-NAVN'
           slot-name: 'Production'
+          package: 'target/*.jar'  
