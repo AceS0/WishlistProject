@@ -77,6 +77,11 @@ public class WishlistRepository {
         return jdbcTemplate.query(sql, mapWishes(), userId);
     }
 
+    public int getWishlistIdByuserId(int userId, String listName){
+        String sql = "SELECT id FROM wishlists WHERE user_id = ? AND name = ?";
+        return jdbcTemplate.queryForObject(sql, Integer.class, userId, listName);
+    }
+
     public List<Item> getWishItemsOfUser(int wishlistId){
         try {
         String sql = "SELECT wi.id AS item_id, wi.name AS item_name, wi.description AS item_description " +
@@ -104,10 +109,16 @@ public class WishlistRepository {
         jdbcTemplate.update(sql,updatedWish.getDescription(),updatedWish.getName());
     }
 
-    //Sletter et ønske. (Delete funktion)
-    public boolean deleteWish(String name){
-        String sql = "DELETE FROM wishlists WHERE name = ?";
-        int rowsAffected =  jdbcTemplate.update(sql,name);
+    //Sletter et ønskeliste. (Delete funktion)
+    public boolean deleteWishlist(int userId, String name){
+        String sql = "DELETE FROM wishlists WHERE user_id = ? AND name = ?";
+        int rowsAffected =  jdbcTemplate.update(sql,userId,name);
+        return rowsAffected > 0;
+    }
+
+    public boolean deleteWish(int listId, String listname){
+        String sql = "DELETE FROM wishlist_items WHERE wishlist_id = ? AND name = ?";
+        int rowsAffected = jdbcTemplate.update(sql,listId,listname);
         return rowsAffected > 0;
     }
 

@@ -38,6 +38,10 @@ public class WishlistService {
         return wishlistRepository.getWishlistsByUserId(userId);
     }
 
+    public int getWishlistIdByUserId(int userId, String listName){
+        return wishlistRepository.getWishlistIdByuserId(userId,listName);
+    }
+
     public List<Item> getWishItemsOfUser(String username, String wishlistname){
         int wishlistId = wishlistRepository.getWishlistIdByName(username,wishlistname);
         return wishlistRepository.getWishItemsOfUser(wishlistId);
@@ -55,8 +59,12 @@ public class WishlistService {
         wishlistRepository.updateWish(updatedWish);
     }
 
-    public boolean deleteWish(String name){
-        return wishlistRepository.deleteWish(name);
+    public boolean deleteWishlist(int userId, String name){
+        return wishlistRepository.deleteWishlist(userId,name);
+    }
+
+    public boolean deleteWish(int listId, String listname){
+        return wishlistRepository.deleteWish(listId,listname);
     }
 
     public String encodePassword(String password) {

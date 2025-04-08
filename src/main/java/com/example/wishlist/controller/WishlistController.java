@@ -140,7 +140,7 @@ public class WishlistController {
         return "redirect:/wishes";
     }
 
-    //Ændre et ønske
+    //Ændre et ønskeliste
     @GetMapping("/wishes/{name}/edit")
     public String editWish(@PathVariable String name, Model model){
         WishlistModel wish = wishlistService.getWishByName(name);
@@ -162,10 +162,25 @@ public class WishlistController {
 
     //Sletter et ønske.
     @PostMapping("/wishes/{name}/delete")
-    public String deleteWish(@PathVariable String name){
-        boolean deleted = wishlistService.deleteWish(name);
+    public String deleteWishlist(@PathVariable String name, HttpSession session){
+        String username = (String) session.getAttribute("username");
+        int userId = wishlistService.getUserIdByUsername(username);
+        boolean deleted = wishlistService.deleteWishlist(userId,name);
         if (deleted) {
             return "redirect:/wishes";
+        } else {
+            return null;
+        }
+    }
+
+    @PostMapping("/wishes/{listname}/{wishname}/delete")
+    public String deleteWish(@PathVariable String listname,@PathVariable String wishname, HttpSession session){
+        String username = (String) session.getAttribute("username");
+        int userId = wishlistService.getUserIdByUsername(username);
+        int listId = wishlistService.getWishlistIdByUserId(userId,listname);
+        boolean deleted = wishlistService.deleteWish(listId,wishname);
+        if (deleted) {
+            return "redirect:/wishes/{listname}";
         } else {
             return null;
         }
