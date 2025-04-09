@@ -94,21 +94,26 @@ public class WishlistRepository {
         }
     }
 
+    public int getWishIdByName(int wishlistId, String wishName){
+        String sql = "SELECT";
+        return 1;
+    }
+
     //Opdaterer et ønske, hvis der opstår en ændring. (Update funktion)
     public void updateWishList(WishlistModel updatedWishList){
         String sql = "UPDATE wishlists SET name = ?, description = ? WHERE id = ?";
         jdbcTemplate.update(sql,updatedWishList.getName(),updatedWishList.getDescription(),updatedWishList.getId());
     }
 
-    public void updateWish(Item updatedWish){
-        String sql = "UPDATE wishlist_items SET name = ?, description = ? WHERE wishlist_id = ?";
-        jdbcTemplate.update(sql,updatedWish.getName(),updatedWish.getDescription(),updatedWish.getId());
+    public void updateWish(Item updatedWish, int wishId) {
+        String sql = "UPDATE wishlist_items SET name = ?, description = ? WHERE wishlist_id = ? AND id = ?";
+        jdbcTemplate.update(sql, updatedWish.getName(), updatedWish.getDescription(), updatedWish.getId(),wishId);
     }
 
     //Sletter et ønskeliste. (Delete funktion)
-    public boolean deleteWishlist(int userId, String name){
-        String sql = "DELETE FROM wishlists WHERE user_id = ? AND name = ?";
-        int rowsAffected =  jdbcTemplate.update(sql,userId,name);
+    public boolean deleteWishlist(int listId, String name){
+        String sql = "DELETE FROM wishlists WHERE id = ? AND name = ?";
+        int rowsAffected =  jdbcTemplate.update(sql,listId,name);
         return rowsAffected > 0;
     }
 
@@ -118,9 +123,9 @@ public class WishlistRepository {
         return rowsAffected > 0;
     }
 
-    public boolean updateWishItemChecked(boolean checked, int listId, String wishname){
-        String sql = "UPDATE wishlist_items SET checked = ? WHERE wishlist_id = ? AND name = ?";
-        int rowsAffected = jdbcTemplate.update(sql,checked,listId,wishname);
+    public boolean updateWishItemChecked(boolean checked, int listId, String wishname, int wishId){
+        String sql = "UPDATE wishlist_items SET checked = ? WHERE wishlist_id = ? AND name = ? AND id = ?";
+        int rowsAffected = jdbcTemplate.update(sql,checked,listId,wishname,wishId);
         return rowsAffected > 0;
     }
 

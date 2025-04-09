@@ -107,7 +107,7 @@ public class WishlistController {
 
         List<Item> userWishlist = wishlistService.getWishItemsOfUser(Integer.parseInt(id));
 
-        model.addAttribute("wishItemId",id);
+        model.addAttribute("wishListItemId",id);
         model.addAttribute("nameOfWishlist", name);
         model.addAttribute("wishList",userWishlist);
         return "wish-items";
@@ -131,6 +131,7 @@ public class WishlistController {
             return "redirect:/wishlist/login";
         }
         Item wish = new Item();
+
         model.addAttribute("wish",wish);
         return "add-wish";
     }
@@ -171,13 +172,17 @@ public class WishlistController {
         }
     }
 
-    @GetMapping("/wishlist/{name}/{id}/{item}/edit")
-    public String editWIsh(@PathVariable String name, @PathVariable String id, @PathVariable String item, Model model){
-        Item wish = wishlistService.getSpecificWishItemOfUser(Integer.parseInt(id),item);
+    @GetMapping("/wishlist/{name}/{id}/{item}/{wishId}/edit")
+    public String editWIsh(@PathVariable String name, @PathVariable String id, @PathVariable String item, Model model, @PathVariable String wishId){
+        Item wish = wishlistService.getSpecificWishItemOfUser(Integer.parseInt(id),item, Integer.parseInt(wishId));
         if (wish != null){
 
             wish.setId(Integer.parseInt(id));
             model.addAttribute("wish", wish);
+            model.addAttribute("name", name);
+            model.addAttribute("item", item);
+            model.addAttribute("id", id);
+            model.addAttribute("wishId", wishId);
             return "edit-wish";
         } else {
             return null;
@@ -191,18 +196,16 @@ public class WishlistController {
         return "redirect:/wishlist";
     }
 
-    @PostMapping("/wishlist/{name}/{id}/{item}/update")
-    public String updateWish(@ModelAttribute Item updatedwish){
-        wishlistService.updateWish(updatedwish);
+    @PostMapping("/wishlist/{name}/{id}/{item}/{wishId}/update")
+    public String updateWish(@ModelAttribute Item updatedwish, @PathVariable String item, @PathVariable String wishId){
+        wishlistService.updateWish(updatedwish,Integer.parseInt(wishId));
         return "redirect:/wishlist";
     }
 
     //Sletter en ønskeliste.
     @PostMapping("/wishlist/{name}/{id}/delete")
-    public String deleteWishlist(@PathVariable String name, HttpSession session){
-        String username = (String) session.getAttribute("username");
-        int userId = wishlistService.getUserIdByUsername(username);
-        boolean deleted = wishlistService.deleteWishlist(userId,name);
+    public String deleteWishlist(@PathVariable String name,@PathVariable String id){
+        boolean deleted = wishlistService.deleteWishlist(Integer.parseInt(id),name);
         if (deleted) {
             return "redirect:/wishlist";
         } else {
@@ -211,8 +214,8 @@ public class WishlistController {
     }
 
     //Sletter et ønske.
-    @PostMapping("/wishlist/{listname}/{id}/{wishname}/delete")
-    public String deleteWish(@PathVariable String id,@PathVariable String wishname){
+    @PostMapping("/wishlist/{listname}/{id}/{wishname}/{wishId}/delete")
+    public String deleteWish(@PathVariable String id, @PathVariable String wishname, @PathVariable String listname){
         boolean deleted = wishlistService.deleteWish(Integer.parseInt(id),wishname);
         if (deleted) {
             return "redirect:/wishlist";
@@ -221,17 +224,14 @@ public class WishlistController {
         }
     }
 
-    @PostMapping("/wishlist/{listname}/{id}/{wishname}/toggle")
-    public String toggleWishItemChecked(@PathVariable String listname, @PathVariable String id,@PathVariable String wishname, HttpSession session){
-        String username = (String) session.getAttribute("username");
-        Item wishItem = wishlistService.getSpecificWishItemOfUser(Integer.parseInt(id),wishname);
+    @PostMapping("/wishlist/{listname}/{id}/{wishname}/{wishId}/toggle")
+    public String toggleWishItemChecked(@PathVariable String listname, @PathVariable String id, @PathVariable String wishname, @PathVariable String wishId){
+        Item wishItem = wishlistService.getSpecificWishItemOfUser(Integer.parseInt(id),wishname,Integer.parseInt(wishId));
         if (wishItem == null){
             return "error";
         }
-
         wishItem.setChecked(!wishItem.isChecked());
-
-        boolean checked = wishlistService.updateWishItemChecked(wishItem.isChecked(),username,wishname,listname);
+        boolean checked = wishlistService.updateWishItemChecked(wishItem.isChecked(),Integer.parseInt(id),wishname,Integer.parseInt(wishId));
         if (!checked){
             return "error";
         }

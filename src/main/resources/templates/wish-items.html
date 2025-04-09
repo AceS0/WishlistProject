@@ -9,7 +9,7 @@
 <h1 class="header1">Dine ønsker:</h1>
 <div class="flex-center">
     <a class="add-wish" href="/wishlist">Gå tilbage</a>
-    <a class="add-wish" th:href="@{'/wishlist/' + ${nameOfWishlist} + '/' + ${wishItemId} + '/add'}">Tilføj et ønske</a>
+    <a class="add-wish" th:href="@{'/wishlist/' + ${nameOfWishlist} + '/' + ${wishListItemId} + '/add'}">Tilføj et ønske</a>
 </div>
 <table class="table">
     <tr>
@@ -27,11 +27,13 @@
                 <input type="checkbox" class="check-button"
                        th:checked="${wishItem.checked}"
                        th:data-name-of-wishlist="${nameOfWishlist}"
+                       th:data-wishlist-item-id="${wishListItemId}"
                        th:data-item-name="${wishItem.name}"
+                       th:data-item-id="${wishItem.id}"
                        onclick="toggleChecked(this)">
             </label>
-            <a class="links-button" th:href="@{'/wishlist/' + ${nameOfWishlist} + '/' + ${wishItemId} + '/'  + ${wishItem.name} + '/edit'}">Rediger</a>
-            <form th:action="@{'/wishlist/' + ${nameOfWishlist} + '/' + ${wishItemId} + '/' + ${wishItem.name} + '/delete'}" method="post" style="display: inline">
+            <a class="links-button" th:href="@{'/wishlist/' + ${nameOfWishlist} + '/' + ${wishListItemId} + '/'  + ${wishItem.name} + '/' + ${wishItem.id} + '/edit'}">Rediger</a>
+            <form th:action="@{'/wishlist/' + ${nameOfWishlist} + '/' + ${wishListItemId} + '/' + ${wishItem.name} + '/' + ${wishItem.id} + '/delete'}" method="post" style="display: inline">
                 <button class="links-buttondelete" type="submit">Slet</button>
             </form>
         </td>
@@ -49,7 +51,9 @@
 <script>
     function toggleChecked(checkbox) {
         const nameOfWishlist = checkbox.getAttribute('data-name-of-wishlist');
+        const wishItemId = checkbox.getAttribute('data-wishlist-item-id');
         const wishItemName = checkbox.getAttribute('data-item-name');
+        const wishId = checkbox.getAttribute('data-item-id');
         const row = checkbox.closest('tr');
 
         const nameCell = row.querySelector('.name');
@@ -63,7 +67,7 @@
             descriptionCell.classList.remove('checked');
         }
 
-        fetch(`/wishlist/${nameOfWishlist}/${wishItemName}/toggle`, {
+        fetch(`/wishlist/${nameOfWishlist}/${wishItemId}/${wishItemName}/${wishId}/toggle`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

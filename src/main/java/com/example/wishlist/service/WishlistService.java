@@ -41,29 +41,30 @@ public class WishlistService {
         return wishlistRepository.getWishItemsOfUser(id);
     }
 
-    public Item getSpecificWishItemOfUser(int id, String itemName){
-        List<Item> userItems = getWishItemsOfUser(id); // Get all items in the wishlist
+    public Item getSpecificWishItemOfUser(int id, String itemName, int wishId){
+        List<Item> userItems = getWishItemsOfUser(id);
         return userItems.stream()
-                .filter(item -> item.getName().equalsIgnoreCase(itemName))
+                .filter(item -> item.getName().equalsIgnoreCase(itemName) && item.getId() == wishId)
                 .findFirst()
                 .orElse(null);
     }
+
 
     public void updateWishList(WishlistModel updatedWishList){
         wishlistRepository.updateWishList(updatedWishList);
     }
 
-    public void updateWish(Item updatedWish){
-        wishlistRepository.updateWish(updatedWish);
+    public void updateWish(Item updatedWish, int wishId){
+        wishlistRepository.updateWish(updatedWish,wishId);
     }
 
-    public boolean updateWishItemChecked(boolean checked, String username, String wishname, String wishlistname){
-        int wishlistId = wishlistRepository.getWishlistIdByName(username,wishlistname);
-        return wishlistRepository.updateWishItemChecked(checked,wishlistId,wishname);
+    public boolean updateWishItemChecked(boolean checked, int wishlistId, String wishname,  int wishId){
+        System.out.println(checked);
+        return wishlistRepository.updateWishItemChecked(checked,wishlistId,wishname, wishId);
     }
 
-    public boolean deleteWishlist(int userId, String name){
-        return wishlistRepository.deleteWishlist(userId,name);
+    public boolean deleteWishlist(int listId, String name){
+        return wishlistRepository.deleteWishlist(listId,name);
     }
 
     public boolean deleteWish(int listId, String wishname){

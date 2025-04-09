@@ -10,6 +10,7 @@
 
 <form th:action="@{/wishlist/{name}/{id}/save(name=${name}, id=${id})}"
       th:object="${wish}" method="post">
+    <input type="hidden" th:field="*{id}"/>
     <div>
         <label for="name">Navn:</label>
         <input type="text" id="name" th:field="*{name}" required>

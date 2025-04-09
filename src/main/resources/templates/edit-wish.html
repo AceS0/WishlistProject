@@ -8,8 +8,9 @@
 <body>
 <h1>Rediger Ønske</h1>
 
-<form action="#" th:action="@{/wishlist/{name}/{id}/{wish}/update(name=${name}, id=${id})}" th:object="${wish}" method="post">
-    <input type="hidden" th:field="*{id}"/>
+<form th:action="@{/wishlist/{name}/{id}/{item}/{wishId}/update(name=${name}, id=${id}, item=${item}, wishId=${wishId})}"
+      th:object="${wish}"
+      method="post">
 
     <div>
         <label for="name">Navn:</label>
