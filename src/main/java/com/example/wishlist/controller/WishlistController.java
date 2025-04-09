@@ -113,18 +113,6 @@ public class WishlistController {
         return "wish-items";
     }
 
-    //Dykker ned i et ønskelistes item.
-    @GetMapping("/wishlist/{name}/{id}/{item}")
-    public String showWishlistItemOfUser(@PathVariable String id, @PathVariable String item, Model model){
-        Item wishItem = wishlistService.getSpecificWishItemOfUser(Integer.parseInt(id),item);
-        if (wishItem == null){
-            return "error";
-        }
-
-        model.addAttribute("wishItem", wishItem);
-        return "wishlist-details";
-    }
-
 
     //Opretter et nyt ønskeliste.
     @GetMapping("/wishlist/add")

@@ -47,7 +47,6 @@ public class WishlistRepository {
     public void addWish(Item wish, int listId){
         try {
             String sql = "INSERT INTO wishlist_items (wishlist_id, name, description) VALUES (?,?,?)";
-            System.out.println("Navn: " +wish.getName() + "Desc: " + wish.getDescription());
             jdbcTemplate.update(sql,listId,wish.getName(),wish.getDescription());
         } catch (DuplicateKeyException ignored){
         }

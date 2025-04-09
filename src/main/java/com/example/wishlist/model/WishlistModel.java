@@ -8,11 +8,6 @@ public class WishlistModel {
     private String description;
     private List<Item> items;
 
-    public WishlistModel(String name, String description){
-        this.name = name;
-        this.description = description;
-    }
-
     public WishlistModel(int id, String name, String description) {
         this.id = id;
         this.name = name;
