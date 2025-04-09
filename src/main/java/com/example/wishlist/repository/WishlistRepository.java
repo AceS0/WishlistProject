@@ -89,7 +89,7 @@ public class WishlistRepository {
                 "JOIN users u ON w.user_id = u.id " +
                 "WHERE u.username = ? AND w.name = ?";
         return jdbcTemplate.queryForObject(sql, Integer.class, username, wishlistName);
-        } catch (EmptyResultDataAccessException e){
+        } catch (EmptyResultDataAccessException | NullPointerException e){
             return -1;
         }
     }
